@@ -4,16 +4,15 @@ import { Injectable, ExecutionContext, CanActivate, HttpException, HttpStatus } 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    async canActivate(
-        context: ExecutionContext,
-    ): Promise<boolean> {
+    async canActivate(context: ExecutionContext): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
-        if (!request.header.authorization) {
+        if (request) {
+          if (!request.headers.authorization) {
             return false;
+          }
+          request.user = await this.validateToken(request.headers.authorization);
+          return true;
         }
-
-        request.user = await this.validateToken(request.header.authorization);
-        return true;
     }
     validateToken(auth: string) {
         if (auth.split(' ')[0] !== 'Bearer') {
