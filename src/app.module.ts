@@ -1,4 +1,4 @@
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,6 +11,8 @@ import { LoggingInterceptor } from './shared/logging.interceptor';
 import { UserModule } from './user/user.module';
 
 
+
+
 @Module({
   imports: [TypeOrmModule.forRoot(),CatsModule, UserModule],
   controllers: [AppController,],
@@ -21,9 +23,11 @@ import { UserModule } from './user/user.module';
   {
     provide:APP_INTERCEPTOR,
     useClass:LoggingInterceptor
-  }  
+  } 
+
 ],
 })
 export class AppModule {
 
 }
+
