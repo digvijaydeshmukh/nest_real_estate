@@ -1,15 +1,15 @@
-import { IsString, IsInt, IsNumber } from 'class-validator';
+import { IsString, IsNumber } from 'class-validator';
 
-export class CreateCats{
+export class CreateCats {
     @IsNumber()
-    id:number;
+    id: number;
 
     @IsString()
-    name:string;
+    name: string;
 
     @IsString()
-    age:string;
+    age: string;
 
     @IsString()
-    breed:string;
+    breed: string;
 }

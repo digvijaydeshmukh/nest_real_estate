@@ -5,8 +5,8 @@ import { plainToClass } from 'class-transformer';
 @Injectable()
 export class ValidationPipe implements PipeTransform<any> {
     async transform(value: any, metadata: ArgumentMetadata) {
-        if(value instanceof Object && this.isEmpty(value)){
-            throw new HttpException('Validation failed : No body submitted',HttpStatus.BAD_REQUEST)
+        if (value instanceof Object && this.isEmpty(value)) {
+            throw new HttpException('Validation failed : No body submitted', HttpStatus.BAD_REQUEST)
         }
         const { metatype } = metadata
         if (!metatype || !this.toValidate(metatype)) {
@@ -17,7 +17,7 @@ export class ValidationPipe implements PipeTransform<any> {
         if (errors.length > 0) {
             // throw new BadRequestException('Validation failed');
 
-            throw new HttpException(`Validation failed : ${this.formatError(errors)}` ,HttpStatus.BAD_REQUEST)
+            throw new HttpException(`Validation failed : ${this.formatError(errors)}`, HttpStatus.BAD_REQUEST)
         }
         return value;
     }
@@ -27,16 +27,16 @@ export class ValidationPipe implements PipeTransform<any> {
         return !types.includes(metatype);
     }
 
-    private formatError(errors:any){
-        return errors.map((err)=>{
-            for(let item in err.constraints){
+    private formatError(errors: any) {
+        return errors.map((err) => {
+            for (let item in err.constraints) {
                 return err.constraints[item]
             }
         }).join(', ');
     }
 
-    private isEmpty(value:any){
-        if(Object.keys(value).length>0){
+    private isEmpty(value: any) {
+        if (Object.keys(value).length > 0) {
             return false;
         }
         return true

@@ -4,17 +4,18 @@ import { Injectable, ExecutionContext, CanActivate, HttpException, HttpStatus } 
 
 @Injectable()
 export class AuthGuard implements CanActivate {
-    async canActivate(context: ExecutionContext): Promise<boolean> {
+    async canActivate(
+        context: ExecutionContext,
+    ): Promise<boolean> {
         const request = context.switchToHttp().getRequest();
-        if (request) {
-          if (!request.headers.authorization) {
+        if (!request.header.authorization) {
             return false;
-          }
-          request.user = await this.validateToken(request.headers.authorization);
-          return true;
         }
+
+        request.user = await this.validateToken(request.header.authorization);
+        return true;
     }
-        async validateToken(auth: string) {
+    validateToken(auth: string) {
         if (auth.split(' ')[0] !== 'Bearer') {
             throw new HttpException('Invalid Token', HttpStatus.UNAUTHORIZED)
         }
@@ -24,11 +25,10 @@ export class AuthGuard implements CanActivate {
         try {
             const decoded = jwt.verify(token, process.env.SECRET)
             return decoded;
-        }catch(err){
-            const message='Token Error :'+(err.message || err.name);
-            throw new HttpException(message,HttpStatus.UNAUTHORIZED)
+        } catch (err) {
+            const message = 'Token Error :' + (err.message || err.name);
+            throw new HttpException(message, HttpStatus.UNAUTHORIZED)
         }
-        
-        
+
     }
 }

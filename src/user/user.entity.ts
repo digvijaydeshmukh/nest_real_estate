@@ -22,11 +22,11 @@ export class UserEntity {
         this.password = await bcrypt.hash(this.password, 10)
     }
 
-    toResponseObject(showToken: boolean = true):UserRes{
+    toResponseObject(showToken: boolean = true): UserRes {
         const { id, created, username, token } = this;
-        const responseObject:UserRes = { id, created, username }        
-        if(showToken){
-            responseObject.token=token
+        const responseObject: UserRes = { id, created, username }
+        if (showToken) {
+            responseObject.token = token
         }
         return responseObject;
     }

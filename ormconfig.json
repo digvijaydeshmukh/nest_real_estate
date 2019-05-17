@@ -5,8 +5,9 @@
     "username": "root",
     "password": "abc@123",
     "database": "test",
-    "entities": [ "src/**/**.entity{.ts,.js}"],
+    "entities": [
+        "src/**/**.entity{.ts,.js}"
+    ],
     "synchronize": true,
-    "logging":true
- 
+    "logging": true
 }

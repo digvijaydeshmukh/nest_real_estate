@@ -9,4 +9,4 @@ import { catsEntity } from './cats.entity';
   controllers: [CatsController],
   providers: [CatsService],
 })
-export class CatsModule {}
+export class CatsModule { }

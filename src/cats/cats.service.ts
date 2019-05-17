@@ -7,48 +7,39 @@ import { catsEntity } from './cats.entity';
 
 @Injectable()
 export class CatsService {
-    constructor(@InjectRepository(catsEntity)private cats:Repository<catsEntity>){
-  
-    }
-    async findAll() :Promise<Cat[]> {    
+    constructor(@InjectRepository(catsEntity) private cats: Repository<catsEntity>) { }
+    async findAll(): Promise<Cat[]> {
         return await this.cats.find();
     }
-
-
-    async findOne(id:number):Promise<Cat>{
-        const item=await this.cats.findOne({id :id})
-        if(!item){
-            throw new HttpException('Not Found',HttpStatus.NOT_FOUND);
+    async findOne(id: number): Promise<Cat> {
+        const item = await this.cats.findOne({ id: id })
+        if (!item) {
+            throw new HttpException('Not Found', HttpStatus.NOT_FOUND);
         }
         return item;
     }
 
-    async deleteOne(id:number):Promise<Cat>{
-        const item=await this.cats.findOne({where : {id}});
-        
-        if(!item){
-            throw new HttpException('Not Found',HttpStatus.NOT_FOUND)
+    async deleteOne(id: number): Promise<Cat> {
+        const item = await this.cats.findOne({ where: { id } });
+
+        if (!item) {
+            throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
         }
-        await this.cats.delete({id: id });
+        await this.cats.delete({ id: id });
         return item
-        
     }
-    async createNew(createItem:Cat):Promise<Cat>{
+    async createNew(createItem: Cat): Promise<Cat> {
         return await this.cats.save(createItem)
     }
-
-
-
-    async updateRecord(updateItem:Cat):Promise<Cat>{
-        const item=await this.cats.findOne({id:updateItem.id})
-        if(!item){
-            throw new HttpException('Not Found',HttpStatus.NOT_FOUND)
+    async updateRecord(updateItem: Cat): Promise<Cat> {
+        const item = await this.cats.findOne({ id: updateItem.id })
+        if (!item) {
+            throw new HttpException('Not Found', HttpStatus.NOT_FOUND)
         }
-        await this.cats.update(updateItem.id,updateItem);
-        let id=updateItem.id;
-        let updatedItem=await this.cats.findOne({where : {id}});
+        await this.cats.update(updateItem.id, updateItem);
+        let id = updateItem.id;
+        let updatedItem = await this.cats.findOne({ where: { id } });
         return updatedItem
-        // return await this.cats.update(updateItem.id,updateItem)
     }
 
 }
